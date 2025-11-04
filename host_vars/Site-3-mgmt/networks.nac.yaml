@@ -1,0 +1,23 @@
+---
+vxlan:
+  overlay:
+    networks:
+      - name: Net_Infra
+        vrf_name: infrastructure
+        net_id: 130001
+        vlan_id: 201
+        vlan_name: Net_Infra_vlan201
+        gw_ip_address: "192.168.106.1/24"
+        network_attach_group: Net_Infra_Group
+    network_attach_groups:
+      - name: Net_Infra_Group
+        switches:
+          - hostname: Site-3_Leaf1-mgmt
+            ports:
+              - Ethernet1/6
+              - Ethernet1/7
+          - hostname: Site-3_Leaf2-mgmt
+            ports:
+              - Ethernet1/6
+              - Ethernet1/7
+              - Ethernet1/8

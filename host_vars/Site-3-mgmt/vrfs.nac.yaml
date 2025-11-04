@@ -1,0 +1,18 @@
+---
+vxlan:
+  overlay:
+    vrfs:
+      - name: infrastructure
+        vrf_id: 150001
+        vlan_id: 2001
+        vrf_attach_group: infrastructure_vrf
+      # - name: infrastructure2
+      #   vrf_id: 150002
+      #   vlan_id: 2002
+      #   vrf_attach_group: infrastructure_vrf
+    vrf_attach_groups:
+      - name: infrastructure_vrf
+        switches:
+          - hostname: Site-3_Leaf1-mgmt
+          - hostname: Site-3_Leaf2-mgmt
+          - hostname: Site-3_BGW1-mgmt

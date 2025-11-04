@@ -1,0 +1,155 @@
+---
+image: mtarking/nac-vxlan:0.5.0
+stages:
+  - setup
+  - validate
+  - deploy
+  - test
+
+variables:
+  ND_HOST:
+    description: "Cisco ND HOST"
+  ND_DOMAIN:
+    description: "Cisco ND Domain"
+  ND_USERNAME:
+    description: "Cisco ND Username"
+  ND_PASSWORD:
+    description: "Cisco ND Password"
+  DC_VXLAN_SCHEMA:
+    description: "Path to the schema file"
+  DC_VXLAN_RULES:
+    description: "Path to the rules file"
+  NDFC_SW_USERNAME:
+    description: "Cisco NDFC Switch Username"
+  NDFC_SW_PASSWORD:
+    description: "Cisco NDFC Switch Password"
+
+setup:
+  stage: setup 
+  script:
+    - set -o pipefail && pip install --upgrade pip
+    - set -o pipefail && pip install -r requirements.txt
+    - set -o pipefail && mkdir -p collections/ansible_collections/cisco
+    - set -o pipefail && mkdir -p outputs/setup
+    - set -o pipefail && ansible-galaxy collection install -r requirements.yaml --pre
+    - set -o pipefail && ansible-galaxy collection install git+https://github.com/CiscoDevNet/ansible-dcnm.git,develop
+    - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/ -r requirements.yaml --pre
+    - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/ git+https://github.com/CiscoDevNet/ansible-dcnm.git,develop 
+    # - set -o pipefail && cd collections/ansible_collections/cisco && git submodule add -f https://github.com/netascode/ansible-dc-vxlan.git nac_dc_vxlan && cd ../../..
+    # - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/ -r requirements.yaml --pre
+    # - set -o pipefail && ansible-galaxy collection install git+https://github.com/CiscoDevNet/ansible-dcnm.git,develop --pre
+    # - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/ git+https://github.com/CiscoDevNet/ansible-dcnm.git,develop  --pre
+    # - set -o pipefail && ansible-galaxy collection install git+https://wwwin-github.cisco.com/netascode/nac-vxlan.git,develop
+    # - set -o pipefail && ansible-galaxy collection install git+https://github.com/netascode/ansible-dc-vxlan,develop
+    # - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/  git+https://github.com/netascode/ansible-dc-vxlan,develop
+    - set -o pipefail && ansible-galaxy collection install git+https://github.com/malriddell/ansible-dc-vxlan,issue-662
+    - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/  git+https://github.com/malriddell/ansible-dc-vxlan,issue-662
+    - set -o pipefail && ansible --version  |& tee outputs/setup/setup_output.txt
+    - set -o pipefail && ansible-galaxy collection list |& tee outputs/setup/setup_output.txt
+  artifacts:
+    paths:
+      - inventory.yaml
+      - outputs/setup/setup_output.txt
+  cache: []
+  after_script:
+  - |
+    text="### [$CI_JOB_NAME] $CI_PROJECT_PATH - $CI_COMMIT_MESSAGE
+    * Trigger: $CI_PIPELINE_SOURCE
+    * Git SHA: $CI_COMMIT_SHA
+    * Status: $CI_JOB_STATUS
+    * Details URL: [Job Results]($CI_JOB_URL)"
+  - python3 tools/send-webex-message.py --room-id $ROOM_ID --token $WEBEX_TOKEN --artifacts-dir ./outputs/setup --zip-name $CI_JOB_NAME-artifacts.zip --message "$text"
+
+validate:
+  stage: validate
+  rules:
+    - if: $CI_COMMIT_TAG == null
+  script:
+    - set -o pipefail && mkdir -p outputs/validate
+    - set -o pipefail && ansible --version
+    - set -o pipefail && nac-validate -s schema/schema.yaml host_vars/Site-1 -v DEBUG |& tee ./outputs/validate/validate_output-Site-1.txt
+    - set -o pipefail && nac-validate -s schema/schema.yaml host_vars/Site-2 -v DEBUG |& tee ./outputs/validate/validate_output-Site-2.txt
+  artifacts:
+    paths:
+      - outputs/validate/validate_output-Site-1.txt
+      - outputs/validate/validate_output-Site-2.txt
+  cache: []
+  after_script:
+  - |
+    text="### [$CI_JOB_NAME] $CI_PROJECT_PATH - $CI_COMMIT_MESSAGE
+    * Trigger: $CI_PIPELINE_SOURCE
+    * Git SHA: $CI_COMMIT_SHA
+    * Status: $CI_JOB_STATUS
+    * Details URL: [Job Results]($CI_JOB_URL)"
+  - python3 tools/send-webex-message.py --room-id $ROOM_ID --token $WEBEX_TOKEN --artifacts-dir ./outputs/validate --zip-name $CI_JOB_NAME-artifacts.zip --message "$text"
+
+deploy:
+  stage: deploy
+  dependencies:
+    - validate
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - set -o pipefail && pip install --upgrade pip
+    - set -o pipefail && pip install -r requirements.txt
+    - set -o pipefail && mkdir -p outputs/deploy
+    - set -o pipefail && mkdir -p collections/ansible_collections/cisco
+    - set -o pipefail && ansible-galaxy collection install -r requirements.yaml --pre
+    - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/ -r requirements.yaml --pre
+    - set -o pipefail && ansible-galaxy collection install git+https://github.com/CiscoDevNet/ansible-dcnm.git,develop
+    - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/ git+https://github.com/CiscoDevNet/ansible-dcnm.git,develop
+    # - set -o pipefail && ansible-galaxy collection install git+https://github.com/netascode/ansible-dc-vxlan,develop
+    # - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/  git+https://github.com/netascode/ansible-dc-vxlan,develop
+    - set -o pipefail && ansible-galaxy collection install git+https://github.com/malriddell/ansible-dc-vxlan,issue-662
+    - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/  git+https://github.com/malriddell/ansible-dc-vxlan,issue-662
+    - set -o pipefail && ansible --version
+    - set -o pipefail && ls -la collections/ansible_collections
+    - set -o pipefail && ls -la collections/ansible_collections/cisco
+    - set -o pipefail && ls -la collections/ansible_collections/cisco/nac_dc_vxlan/
+    - set -o pipefail && ansible-playbook -i inventory.yaml vxlan.yaml --limit Site-1 |& tee ./outputs/deploy/deploy_output-Site-1.txt
+    - set -o pipefail && ansible-playbook -i inventory.yaml vxlan.yaml --limit Site-2 |& tee ./outputs/deploy/deploy_output-Site-2.txt
+  artifacts:
+    when: always
+    paths:
+      - ./outputs/deploy/deploy_output-Site-1.txt
+      - ./outputs/deploy/deploy_output-Site-2.txt
+  after_script:
+  - |
+    text="### [$CI_JOB_NAME] $CI_PROJECT_PATH - $CI_COMMIT_MESSAGE
+    * Trigger: $CI_PIPELINE_SOURCE
+    * Git SHA: $CI_COMMIT_SHA
+    * Status: $CI_JOB_STATUS
+    * Details URL: [Job Results]($CI_JOB_URL)"
+  - python3 tools/send-webex-message.py --room-id $ROOM_ID --token $WEBEX_TOKEN --artifacts-dir ./outputs/deploy --zip-name $CI_JOB_NAME-artifacts.zip --message "$text"
+
+
+test-integration:
+  stage: test
+  dependencies:
+    - deploy
+  needs:
+    - deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - set -o pipefail && mkdir -p outputs/results
+    - set -o pipefail && nac-test -d ./host_vars/Site-1 -d ./group_vars/ndfc/defaults.yaml -t ./tests/templates  -f ./tests/jinja_filters -o ./outputs/results/Site-1/ |& tee ./outputs/results/test_output-Site-1.txt
+    - set -o pipefail && nac-test -d ./host_vars/Site-2 -d ./group_vars/ndfc/defaults.yaml -t ./tests/templates  -f ./tests/jinja_filters -o ./outputs/results/Site-2/ |& tee ./outputs/results/test_output-Site-2.txt
+  artifacts:
+    when: always
+    paths:
+      - outputs/results/Site-1/*.html
+      - outputs/results/Site-1/xunit.xml
+      - outputs/results/Site-2/*.html
+      - outputs/results/Site-2/xunit.xml
+      - outputs/results/test_output.txt
+    reports:
+      junit: outputs/results/Site-2/xunit.xml
+  after_script:
+  - |
+    text="### [$CI_JOB_NAME] $CI_PROJECT_PATH - $CI_COMMIT_MESSAGE
+    * Trigger: $CI_PIPELINE_SOURCE
+    * Git SHA: $CI_COMMIT_SHA
+    * Status: $CI_JOB_STATUS
+    * Details URL: [Job Results]($CI_JOB_URL)"
+  - python3 tools/send-webex-message.py --room-id $ROOM_ID --token $WEBEX_TOKEN --artifacts-dir ./outputs/results --zip-name $CI_JOB_NAME-artifacts.zip --message "$text"

@@ -1,0 +1,20 @@
+---
+# This is the main entry point playbook for calling the various
+# roles in this collection.
+- hosts: Site-3-mgmt
+  any_errors_fatal: true
+  gather_facts: false
+
+  roles:
+    # Validate user data based on model
+    #
+    - role: cisco.nac_dc_vxlan.validate
+
+- hosts: Site-3-data
+  any_errors_fatal: true
+  gather_facts: false
+
+  roles:
+    # Validate user data based on model
+    #
+    - role: cisco.nac_dc_vxlan.validate

@@ -1,0 +1,37 @@
+nac-validate -s schema/schema.yaml host_vars/Site-3-mgmt -v DEBUG
+nac-validate -s schema/schema.yaml host_vars/Site-3-data -v DEBUG
+
+ansible-playbook -i inventory.yaml vxlan.yaml
+ansible-playbook -i inventory.yaml vxlan.yaml --limit Site-3-mgmt
+ansible-playbook -i inventory.yaml vxlan.yaml --limit Site-3-mgmt --tags "cc_verify,cr_manage_interfaces,cr_manage_vrfs_networks,cr_manage_policy,cr_manage_links,cr_manage_edge_connections,rr_manage_interfaces,rr_manage_networks,rr_manage_vrfs,rr_manage_links,rr_manage_edge_connections,rr_manage_policy,role_validate,role_validate,role_create,role_deploy,role_remove"
+
+    "supported_tags": [
+        "cc_verify",
+        "cr_manage_fabric",
+        "cr_manage_switches",
+        "cr_manage_vpc_peers",
+        "cr_manage_interfaces",
+        "cr_manage_vrfs_networks",
+        "cr_manage_policy",
+        "cr_manage_links",
+        "cr_manage_edge_connections",
+        "rr_manage_interfaces",
+        "rr_manage_networks",
+        "rr_manage_vrfs",
+        "rr_manage_vpc_peers",
+        "rr_manage_links",
+        "rr_manage_edge_connections",
+        "rr_manage_switches",
+        "rr_manage_policy",
+        "role_validate",
+        "role_create",
+        "role_deploy",
+        "role_remove"
+    ]
+
+ansible-playbook -i inventory.yaml vxlan.yaml --limit Site-3-mgmt --tags "cr_manage_interfaces,cr_manage_vrfs_networks,cr_manage_policy,cr_manage_links,cr_manage_edge_connections,rr_manage_interfaces,rr_manage_networks,rr_manage_vrfs,rr_manage_links,rr_manage_edge_connections,rr_manage_policy,role_validate,role_deploy"
+
+ansible-playbook -i inventory.yaml vxlan.yaml --limit Site-3-data
+
+nac-test -d ./host_vars/Site-3-mgmt -d ./group_vars/ndfc/defaults.yaml -t ./tests/templates  -f ./tests/jinja_filters -o ./results/Site-3-mgmt/
+nac-test -d ./host_vars/Site-3-data -d ./group_vars/ndfc/defaults.yaml -t ./tests/templates  -f ./tests/jinja_filters -o ./results/Site-3-data/

@@ -1,0 +1,10 @@
+---
+
+all:
+  children:
+    ndfc:
+      hosts:
+        Site-3-mgmt:
+          ansible_host: "{{ lookup('ansible.builtin.env', 'ND_HOST') }}"
+        Site-3-data:
+          ansible_host: "{{ lookup('ansible.builtin.env', 'ND_HOST') }}"
