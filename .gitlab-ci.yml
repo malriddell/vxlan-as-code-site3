@@ -5,6 +5,7 @@ stages:
   - validate
   - deploy
   - test
+  - document
 
 variables:
   ND_HOST:
