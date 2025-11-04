@@ -1,0 +1,5 @@
+site_name: VXLAN Site 3
+theme:
+  name: material
+nav:
+  - Home: index.md

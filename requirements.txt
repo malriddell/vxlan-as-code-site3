@@ -8,3 +8,4 @@ macaddress
 netaddr
 packaging==24.1
 requests
+mkdocs-material

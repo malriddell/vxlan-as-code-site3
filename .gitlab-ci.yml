@@ -153,3 +153,18 @@ test-integration:
     * Status: $CI_JOB_STATUS
     * Details URL: [Job Results]($CI_JOB_URL)"
   - python3 tools/send-webex-message.py --room-id $ROOM_ID --token $WEBEX_TOKEN --artifacts-dir ./outputs/results --zip-name $CI_JOB_NAME-artifacts.zip --message "$text"
+
+pages:
+  stage: document
+  dependencies:
+    - test-integration
+  needs:
+    - test-integration
+  script:
+    - pip install mkdocs-material
+    - mkdocs build --site-dir public
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
