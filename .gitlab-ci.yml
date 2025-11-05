@@ -161,11 +161,11 @@ pages:
   needs:
     - test-integration
   script:
+    - pip install --upgrade pip
     - pip install mkdocs-material
-    - cd documentation
     - mkdocs build --site-dir public
   artifacts:
     paths:
-      - documentation/public
+      - public
   only:
     - main
