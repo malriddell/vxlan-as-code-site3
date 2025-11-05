@@ -101,7 +101,7 @@ deploy:
     - set -o pipefail && ansible-galaxy collection install git+https://github.com/malriddell/ansible-dc-vxlan,issue-662
     - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/  git+https://github.com/malriddell/ansible-dc-vxlan,issue-662
     - set -o pipefail && ansible --version
-    - set -o pipefail && ansible-galaxy collection list
+    # - set -o pipefail && ansible-galaxy collection list
     - set -o pipefail && ls -la collections/ansible_collections
     - set -o pipefail && ls -la collections/ansible_collections/cisco
     - set -o pipefail && ls -la collections/ansible_collections/cisco/nac_dc_vxlan/
