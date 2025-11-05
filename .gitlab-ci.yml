@@ -26,7 +26,7 @@ variables:
     description: "Cisco NDFC Switch Password"
   http_proxy: "http://proxy.esl.cisco.com:8080"
   https_proxy: "http://proxy.esl.cisco.com:8080"
-  no_proxy: "localhost,127.0.0.1,.cisco.com"
+  no_proxy: "localhost,127.0.0.1,.cisco.com,10.82.4.48,10.0.0.0/8"
 
 setup:
   stage: setup
