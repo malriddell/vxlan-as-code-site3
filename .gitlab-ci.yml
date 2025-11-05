@@ -26,7 +26,7 @@ variables:
     description: "Cisco NDFC Switch Password"
 
 setup:
-  stage: setup 
+  stage: setup
   script:
     - set -o pipefail && pip install --upgrade pip
     - set -o pipefail && pip install -r requirements.txt
@@ -36,18 +36,11 @@ setup:
     - set -o pipefail && ansible-galaxy collection install git+https://github.com/CiscoDevNet/ansible-dcnm.git,develop
     - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/ -r requirements.yaml --pre
     - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/ git+https://github.com/CiscoDevNet/ansible-dcnm.git,develop 
-    # - set -o pipefail && cd collections/ansible_collections/cisco && git submodule add -f https://github.com/netascode/ansible-dc-vxlan.git nac_dc_vxlan && cd ../../..
-    # - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/ -r requirements.yaml --pre
-    # - set -o pipefail && ansible-galaxy collection install git+https://github.com/CiscoDevNet/ansible-dcnm.git,develop --pre
-    # - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/ git+https://github.com/CiscoDevNet/ansible-dcnm.git,develop  --pre
-    # - set -o pipefail && ansible-galaxy collection install git+https://wwwin-github.cisco.com/netascode/nac-vxlan.git,develop
-    # - set -o pipefail && ansible-galaxy collection install git+https://github.com/netascode/ansible-dc-vxlan,develop
-    # - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/  git+https://github.com/netascode/ansible-dc-vxlan,develop
     - set -o pipefail && ansible-galaxy collection install git+https://github.com/malriddell/ansible-dc-vxlan,issue-662
     - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/  git+https://github.com/malriddell/ansible-dc-vxlan,issue-662
     - set -o pipefail && rm -f ./schema/schema.yaml
     - set -o pipefail && ln -s ../nac-vxlan/schema/schema.yaml schema/schema.yaml
-    - set -o pipefail && rm -rf ./tests/templates
+    - set -o pipefail && rm -rf ./tests/*
     - set -o pipefail && ln -s ../nac-vxlan/templates/nd/tests ./tests/templates
     - set -o pipefail && ln -s ../nac-vxlan/jinja_filters ./tests/jinja_filters
     - set -o pipefail && ansible --version  |& tee outputs/setup/setup_output.txt
