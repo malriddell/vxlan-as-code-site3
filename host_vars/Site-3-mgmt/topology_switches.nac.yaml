@@ -16,7 +16,7 @@ vxlan:
           management_ipv4_address: "10.2.12.6"
         poap:
           bootstrap: false
-      - name: Site-3_Leaf1-mgmttru
+      - name: Site-3_Leaf1-mgmt
         serial_number: 9GRV6RJ1EQ2
         role: leaf
         management:
