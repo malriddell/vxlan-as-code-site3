@@ -75,12 +75,13 @@ validate:
     - set -o pipefail && ls -l ./nac-vxlan
     - set -o pipefail && ls -l ./nac-vxlan/schemas
     - set -o pipefail && rm -f ./schema/schema.yaml
-    - set -o pipefail && ln -s ./nac-vxlan/schemas/schema.yaml schema/schema.yaml
+    - set -o pipefail && ln -s `pwd`/nac-vxlan/schemas/schema.yaml schema/schema.yaml
     - set -o pipefail && ls -l ./nac-vxlan/schemas
     - set -o pipefail && ls -l ./schema
     - set -o pipefail && ansible --version
     - set -o pipefail && ansible-galaxy collection list
-    - set -o pipefail && nac-validate -s schema/schema.yaml host_vars/Site-3-mgmt -v DEBUG |& tee ./outputs/validate/validate_output-Site-3-mgmt.txt
+    - set -o pipefail && ls -l ./schema
+    - set -o pipefail && nac-validate -s ./schema/schema.yaml host_vars/Site-3-mgmt -v DEBUG |& tee ./outputs/validate/validate_output-Site-3-mgmt.txt
     # - set -o pipefail && nac-validate -s schema/schema.yaml host_vars/Site-3-data -v DEBUG |& tee ./outputs/validate/validate_output-Site-3-data.txt
   artifacts:
     paths:
