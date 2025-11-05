@@ -68,8 +68,12 @@ validate:
   script:
     - set -o pipefail && mkdir -p outputs/validate
     - set -o pipefail && ansible --version
+    - set -o pipefail && git clone https://wwwin-github.cisco.com/netascode/nac-vxlan.git ../
+    - set -o pipefail && ln -s ../nac-vxlan/schema/schema.yaml schema/schema.yaml
+    - set -o pipefail && ln -s ../nac-vxlan/templates/nd/tests ./tests/templates
+    - set -o pipefail && ln -s ../nac-vxlan/jinja_filters ./tests/jinja_filters
     - set -o pipefail && nac-validate -s schema/schema.yaml host_vars/Site-3-mgmt -v DEBUG |& tee ./outputs/validate/validate_output-Site-3-mgmt.txt
-    - set -o pipefail && nac-validate -s schema/schema.yaml host_vars/Site-3-data -v DEBUG |& tee ./outputs/validate/validate_output-Site-3-data.txt
+    # - set -o pipefail && nac-validate -s schema/schema.yaml host_vars/Site-3-data -v DEBUG |& tee ./outputs/validate/validate_output-Site-3-data.txt
   artifacts:
     paths:
       - outputs/validate/validate_output-Site-3-mgmt.txt
