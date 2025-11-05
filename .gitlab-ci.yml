@@ -43,7 +43,7 @@ setup:
     # - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/ git+https://github.com/CiscoDevNet/ansible-dcnm.git,develop
     - set -o pipefail && git clone https://wwwin-github.cisco.com/netascode/nac-vxlan.git ./nac-vxlan
     - set -o pipefail && rm -f ./schema/schema.yaml
-    - set -o pipefail && ln -s ./nac-vxlan/schema/schema.yaml schema/schema.yaml
+    - set -o pipefail && ln -s ./nac-vxlan/schema/schema.yaml schemas/schema.yaml
     - set -o pipefail && rm -rf ./tests/*
     - set -o pipefail && ln -s ./nac-vxlan/templates/nd/tests ./tests/templates
     - set -o pipefail && ln -s ./nac-vxlan/jinja_filters ./tests/jinja_filters
@@ -74,7 +74,7 @@ validate:
     - set -o pipefail && git clone https://wwwin-github.cisco.com/netascode/nac-vxlan.git ./nac-vxlan
     - set -o pipefail && ls -l ./nac-vxlan
     - set -o pipefail && rm -f ./schema/schema.yaml
-    - set -o pipefail && ln -s ./nac-vxlan/schema/schema.yaml schema/schema.yaml
+    - set -o pipefail && ln -s ./nac-vxlan/schemas/schema.yaml schema/schema.yaml
     - set -o pipefail && ansible --version
     - set -o pipefail && ansible-galaxy collection list
     - set -o pipefail && nac-validate -s schema/schema.yaml host_vars/Site-3-mgmt -v DEBUG |& tee ./outputs/validate/validate_output-Site-3-mgmt.txt
@@ -110,13 +110,19 @@ deploy:
     # - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/ -r requirements.yaml --pre
     # - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/  git+https://github.com/malriddell/ansible-dc-vxlan,issue-662
     # - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/ git+https://github.com/CiscoDevNet/ansible-dcnm.git,develop
+    - set -o pipefail && git clone https://wwwin-github.cisco.com/netascode/nac-vxlan.git ./nac-vxlan
+    - set -o pipefail && rm -f ./schema/schema.yaml
+    - set -o pipefail && ln -s ./nac-vxlan/schema/schema.yaml schemas/schema.yaml
+    - set -o pipefail && rm -rf ./tests/*
+    - set -o pipefail && ln -s ./nac-vxlan/templates/nd/tests ./tests/templates
+    - set -o pipefail && ln -s ./nac-vxlan/jinja_filters ./tests/jinja_filters
     - set -o pipefail && ls -l .
     - set -o pipefail && pip list
     - set -o pipefail && ansible --version
     - set -o pipefail && ansible-galaxy collection list
-    - set -o pipefail && ls -la collections/ansible_collections
-    - set -o pipefail && ls -la collections/ansible_collections/cisco
-    - set -o pipefail && ls -la collections/ansible_collections/cisco/nac_dc_vxlan/
+    # - set -o pipefail && ls -la collections/ansible_collections
+    # - set -o pipefail && ls -la collections/ansible_collections/cisco
+    # - set -o pipefail && ls -la collections/ansible_collections/cisco/nac_dc_vxlan/
     - set -o pipefail && ansible-playbook -i inventory.yaml vxlan.yaml --limit Site-3-mgmt --tags "cr_manage_interfaces,cr_manage_vrfs_networks,cr_manage_policy,cr_manage_links,cr_manage_edge_connections,rr_manage_interfaces,rr_manage_networks,rr_manage_vrfs,rr_manage_links,rr_manage_edge_connections,rr_manage_policy,role_validate,role_deploy" |& tee ./outputs/deploy/deploy_output-Site-3-mgmt.txt
     # - set -o pipefail && ansible-playbook -i inventory.yaml vxlan.yaml --limit Site-3-data |& tee ./outputs/deploy/deploy_output-Site-3-data.txt
   artifacts:
