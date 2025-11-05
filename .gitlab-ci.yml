@@ -69,7 +69,9 @@ validate:
     - set -o pipefail && mkdir -p outputs/validate
     - set -o pipefail && ansible --version
     - set -o pipefail && git clone https://wwwin-github.cisco.com/netascode/nac-vxlan.git ../nac-vxlan
+    - set -o pipefail && rm -f ../nac-vxlan/schema/schema.yaml
     - set -o pipefail && ln -s ../nac-vxlan/schema/schema.yaml schema/schema.yaml
+    - set -o pipefail && rm -rf ./tests/templates
     - set -o pipefail && ln -s ../nac-vxlan/templates/nd/tests ./tests/templates
     - set -o pipefail && ln -s ../nac-vxlan/jinja_filters ./tests/jinja_filters
     - set -o pipefail && nac-validate -s schema/schema.yaml host_vars/Site-3-mgmt -v DEBUG |& tee ./outputs/validate/validate_output-Site-3-mgmt.txt
