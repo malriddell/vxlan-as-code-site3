@@ -68,7 +68,7 @@ validate:
   script:
     - set -o pipefail && mkdir -p outputs/validate
     - set -o pipefail && ansible --version
-    - set -o pipefail && git clone https://wwwin-github.cisco.com/netascode/nac-vxlan.git ../
+    - set -o pipefail && git clone https://wwwin-github.cisco.com/netascode/nac-vxlan.git ../nac-vxlan
     - set -o pipefail && ln -s ../nac-vxlan/schema/schema.yaml schema/schema.yaml
     - set -o pipefail && ln -s ../nac-vxlan/templates/nd/tests ./tests/templates
     - set -o pipefail && ln -s ../nac-vxlan/jinja_filters ./tests/jinja_filters
@@ -103,7 +103,7 @@ deploy:
     - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/ -r requirements.yaml --pre
     - set -o pipefail && ansible-galaxy collection install git+https://github.com/malriddell/ansible-dc-vxlan,issue-662
     - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/  git+https://github.com/malriddell/ansible-dc-vxlan,issue-662
-    - set -o pipefail && git clone https://wwwin-github.cisco.com/netascode/nac-vxlan.git ../
+    - set -o pipefail && git clone https://wwwin-github.cisco.com/netascode/nac-vxlan.git ../nac-vxlan
     - set -o pipefail && ln -s ../nac-vxlan/schema/schema.yaml schema/schema.yaml
     - set -o pipefail && ln -s ../nac-vxlan/templates/nd/tests ./tests/templates
     - set -o pipefail && ln -s ../nac-vxlan/jinja_filters ./tests/jinja_filters
