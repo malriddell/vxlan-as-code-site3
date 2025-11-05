@@ -117,6 +117,12 @@ deploy:
     - set -o pipefail && pip list
     - set -o pipefail && ansible --version
     - set -o pipefail && ansible-galaxy collection list
+    - set -o pipefail && echo $ND_HOST
+    - set -o pipefail && echo $ND_USERNAME
+    - set -o pipefail && echo $ND_PASSWORD
+    - set -o pipefail && echo $NDFC_SW_USERNAME
+    - set -o pipefail && echo $DC_VXLAN_SCHEMA
+    - set -o pipefail && echo $DC_VXLAN_RULES
     # - set -o pipefail && ls -la collections/ansible_collections
     # - set -o pipefail && ls -la collections/ansible_collections/cisco
     # - set -o pipefail && ls -la collections/ansible_collections/cisco/nac_dc_vxlan/
