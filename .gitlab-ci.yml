@@ -107,6 +107,7 @@ deploy:
     - set -o pipefail && ls -l .
     - set -o pipefail && ls -l ..
     - set -o pipefail && ls -l ../nac-vxlan
+    - set -o pipefail && pip list
     - set -o pipefail && ansible --version
     - set -o pipefail && ansible-galaxy collection list
     - set -o pipefail && ls -la collections/ansible_collections
