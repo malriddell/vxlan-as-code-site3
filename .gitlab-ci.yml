@@ -166,6 +166,6 @@ pages:
     - mkdocs build --site-dir public
   artifacts:
     paths:
-      - public
+      - documentation/public
   only:
     - main
