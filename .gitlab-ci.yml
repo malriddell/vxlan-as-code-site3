@@ -43,7 +43,7 @@ setup:
     # - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/ git+https://github.com/CiscoDevNet/ansible-dcnm.git,develop
     - set -o pipefail && git clone https://wwwin-github.cisco.com/netascode/nac-vxlan.git ./nac-vxlan
     - set -o pipefail && rm -f ./schema/schema.yaml
-    - set -o pipefail && ln -s ./nac-vxlan/schema/schema.yaml schemas/schema.yaml
+    - set -o pipefail && ln -s ./nac-vxlan/schemas/schema.yaml schema/schema.yaml
     - set -o pipefail && rm -rf ./tests/*
     - set -o pipefail && ln -s ./nac-vxlan/templates/nd/tests ./tests/templates
     - set -o pipefail && ln -s ./nac-vxlan/jinja_filters ./tests/jinja_filters
