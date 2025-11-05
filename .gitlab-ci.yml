@@ -162,6 +162,7 @@ pages:
     - test-integration
   script:
     - pip install mkdocs-material
+    - cd documentation
     - mkdocs build --site-dir public
   artifacts:
     paths:
