@@ -145,10 +145,10 @@ test-integration:
       - outputs/results/Site-3-mgmt/xunit.xml
       # - outputs/results/Site-3-data/*.html
       # - outputs/results/Site-3-data/xunit.xml
-      - outputs/results/test_output-Site-3-mgmt.txt
-      - outputs/results/test_output-Site-3-data.txt
+      - ./outputs/results/test_output-Site-3-mgmt.txt
+      # - ./outputs/results/test_output-Site-3-data.txt
     reports:
-      junit: outputs/results/Site-3-mgmt/xunit.xml
+      junit: ./outputs/results/Site-3-mgmt/xunit.xml
   after_script:
   - |
     text="### [$CI_JOB_NAME] $CI_PROJECT_PATH - $CI_COMMIT_MESSAGE
