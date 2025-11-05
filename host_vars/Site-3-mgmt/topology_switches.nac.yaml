@@ -8,32 +8,32 @@ vxlan:
         management:
           management_ipv4_address: "10.2.12.5"
         poap:
-          bootstrap: true
+          bootstrap: false
       - name: Site-3_Spine2-mgmt
         serial_number: 9RUFO8B78VH
         role: spine
         management:
           management_ipv4_address: "10.2.12.6"
         poap:
-          bootstrap: true
-      - name: Site-3_Leaf1-mgmt
+          bootstrap: false
+      - name: Site-3_Leaf1-mgmttru
         serial_number: 9GRV6RJ1EQ2
         role: leaf
         management:
           management_ipv4_address: "10.2.12.11"
         poap:
-          bootstrap: true
+          bootstrap: false
       - name: Site-3_Leaf2-mgmt
         serial_number: 9BBW6ETWTSX
         role: leaf
         management:
           management_ipv4_address: "10.2.12.12"
         poap:
-          bootstrap: true
+          bootstrap: false
       - name: Site-3_BGW1-mgmt
         serial_number: 9XQ74KMFDNA
         role: border_gateway
         management:
           management_ipv4_address: "10.2.12.24"
         poap:
-          bootstrap: true
+          bootstrap: false

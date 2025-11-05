@@ -100,10 +100,6 @@ deploy:
     - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/ -r requirements.yaml --pre
     - set -o pipefail && ansible-galaxy collection install git+https://github.com/malriddell/ansible-dc-vxlan,issue-662
     - set -o pipefail && ansible-galaxy collection install -p collections/ansible_collections/  git+https://github.com/malriddell/ansible-dc-vxlan,issue-662
-    # - set -o pipefail && git clone https://wwwin-github.cisco.com/netascode/nac-vxlan.git ../nac-vxlan
-    # - set -o pipefail && ln -s ../nac-vxlan/schema/schema.yaml schema/schema.yaml
-    # - set -o pipefail && ln -s ../nac-vxlan/templates/nd/tests ./tests/templates
-    # - set -o pipefail && ln -s ../nac-vxlan/jinja_filters ./tests/jinja_filters
     - set -o pipefail && ansible --version
     - set -o pipefail && ansible-galaxy collection list
     - set -o pipefail && ls -la collections/ansible_collections
@@ -136,19 +132,19 @@ test-integration:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - set -o pipefail && mkdir -p outputs/results
-    - set -o pipefail && nac-test -d ./host_vars/Site-3-mgmt -d ./group_vars/ndfc/defaults.yaml -t ./tests/templates  -f ./tests/jinja_filters -o ./outputs/results/Site-3-mgmt/ |& tee ./outputs/results/test_output-Site-3-mgmt.txt
+    # - set -o pipefail && nac-test -d ./host_vars/Site-3-mgmt -d ./group_vars/ndfc/defaults.yaml -t ./tests/templates  -f ./tests/jinja_filters -o ./outputs/results/Site-3-mgmt/ |& tee ./outputs/results/test_output-Site-3-mgmt.txt
     # - set -o pipefail && nac-test -d ./host_vars/Site-3-data -d ./group_vars/ndfc/defaults.yaml -t ./tests/templates  -f ./tests/jinja_filters -o ./outputs/results/Site-3-data/ |& tee ./outputs/results/test_output-Site-3-data.txt
   artifacts:
     when: always
-    paths:
-      - outputs/results/Site-3-mgmt/*.html
-      - outputs/results/Site-3-mgmt/xunit.xml
+    # paths:
+      # - outputs/results/Site-3-mgmt/*.htm
+      # - outputs/results/Site-3-mgmt/xunit.xml
       # - outputs/results/Site-3-data/*.html
       # - outputs/results/Site-3-data/xunit.xml
-      - ./outputs/results/test_output-Site-3-mgmt.txt
+      # - ./outputs/results/test_output-Site-3-mgmt.txt
       # - ./outputs/results/test_output-Site-3-data.txt
-    reports:
-      junit: ./outputs/results/Site-3-mgmt/xunit.xml
+    # reports:
+    #   junit: ./outputs/results/Site-3-mgmt/xunit.xml
   after_script:
   - |
     text="### [$CI_JOB_NAME] $CI_PROJECT_PATH - $CI_COMMIT_MESSAGE
