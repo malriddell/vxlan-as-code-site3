@@ -117,16 +117,16 @@ deploy:
     - set -o pipefail && pip list
     - set -o pipefail && ansible --version
     - set -o pipefail && ansible-galaxy collection list
-    - set -o pipefail && echo $ND_HOST
-    - set -o pipefail && echo $ND_USERNAME
-    - set -o pipefail && echo $ND_PASSWORD
-    - set -o pipefail && echo $NDFC_SW_USERNAME
-    - set -o pipefail && echo $DC_VXLAN_SCHEMA
-    - set -o pipefail && echo $DC_VXLAN_RULES
+    # - set -o pipefail && echo $ND_HOST
+    # - set -o pipefail && echo $ND_USERNAME
+    # - set -o pipefail && echo $ND_PASSWORD
+    # - set -o pipefail && echo $NDFC_SW_USERNAME
+    # - set -o pipefail && echo $DC_VXLAN_SCHEMA
+    # - set -o pipefail && echo $DC_VXLAN_RULES
     # - set -o pipefail && ls -la collections/ansible_collections
     # - set -o pipefail && ls -la collections/ansible_collections/cisco
     # - set -o pipefail && ls -la collections/ansible_collections/cisco/nac_dc_vxlan/
-    - set -o pipefail && ansible-playbook -vvv -i inventory.yaml vxlan.yaml --limit Site-3-mgmt --tags "cr_manage_interfaces,cr_manage_vrfs_networks,cr_manage_policy,cr_manage_links,cr_manage_edge_connections,rr_manage_interfaces,rr_manage_networks,rr_manage_vrfs,rr_manage_links,rr_manage_edge_connections,rr_manage_policy,role_validate,role_deploy" |& tee ./outputs/deploy/deploy_output-Site-3-mgmt.txt
+    - set -o pipefail && ansible-playbook -i inventory.yaml vxlan.yaml --limit Site-3-mgmt --tags "cr_manage_interfaces,cr_manage_vrfs_networks,cr_manage_policy,cr_manage_links,cr_manage_edge_connections,rr_manage_interfaces,rr_manage_networks,rr_manage_vrfs,rr_manage_links,rr_manage_edge_connections,rr_manage_policy,role_validate,role_deploy" |& tee ./outputs/deploy/deploy_output-Site-3-mgmt.txt
     # - set -o pipefail && ansible-playbook -i inventory.yaml vxlan.yaml --limit Site-3-data |& tee ./outputs/deploy/deploy_output-Site-3-data.txt
   artifacts:
     when: always
