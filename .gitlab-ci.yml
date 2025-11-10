@@ -42,7 +42,6 @@ setup:
     - set -o pipefail && rm -f ./schema/schema.yaml
     - set -o pipefail && ln -s ./nac-vxlan/schemas/schema.yaml schema/schema.yaml
     - set -o pipefail && rm -rf ./tests/*
-    # Added comment
     - set -o pipefail && ln -s ./nac-vxlan/templates/nd/tests ./tests/templates
     - set -o pipefail && ln -s ./nac-vxlan/jinja_filters ./tests/jinja_filters
     - set -o pipefail && ansible --version  |& tee outputs/setup/setup_output.txt
