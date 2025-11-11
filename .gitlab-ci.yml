@@ -169,6 +169,7 @@ pages:
   script:
     - pip install --upgrade pip
     - pip install mkdocs-material
+    - python3 tools/gen_mkdocs.py --output-dir . host_vars/Site-3-mgmt
     - mkdocs build --site-dir public
   artifacts:
     paths:
